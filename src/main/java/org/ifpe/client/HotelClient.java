@@ -67,7 +67,7 @@ public class HotelClient {
         println("reservas       - Ver todas as reservas");
         println("reserva        - Ver uma reserva específica");
         println("quarto         - Ver um quarto específico");
-        commands.put("disponiveis_tipo", this::searchRoomsByType);
+        println("disponiveis_tipo - Ver quartos disponíveis por tipo");
         println("quartos        - Ver todos os quartos");
         println("atualizar      - Atualizar um quarto");
         println("sair           - Sair do sistema");
