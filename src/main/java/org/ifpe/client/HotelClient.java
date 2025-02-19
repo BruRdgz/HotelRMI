@@ -67,6 +67,7 @@ public class HotelClient {
         println("reservas       - Ver todas as reservas");
         println("reserva        - Ver uma reserva específica");
         println("quarto         - Ver um quarto específico");
+        println("reservas_quarto - Ver reservas por quarto");
         println("disponiveis_tipo - Ver quartos disponíveis por tipo");
         println("quartos        - Ver todos os quartos");
         println("atualizar      - Atualizar um quarto");
