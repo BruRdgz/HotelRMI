@@ -12,6 +12,7 @@ public interface HotelService extends Remote {
     String getBookings() throws RemoteException;
     String getBooking(Long bookingID) throws RemoteException;
     String getRoom(Long roomID) throws RemoteException;
+    String searchAvailableRoomsByType(String type) throws RemoteException;
     String getRooms() throws RemoteException;
     String updateRoom(Long roomID, String type, Double price, Boolean available) throws RemoteException;
 }

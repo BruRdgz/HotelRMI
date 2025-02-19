@@ -18,6 +18,18 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
         for (long i = 1; i <= 10; i++) {
             rooms.put(i, new Room(i, "Standard", 100.0, true));
         }
+        for (long i = 11; i <= 20; i++) {
+            rooms.put(i, new Room(i, "Deluxe", 150.0, true));
+        }
+        for (long i = 21; i <= 30; i++) {
+            rooms.put(i, new Room(i, "Suite", 200.0, true));
+        }
+        for (long i = 31; i <= 40; i++) {
+            rooms.put(i, new Room(i, "Premium", 250.0, true));
+        }
+        for (long i = 41; i <= 50; i++) {
+            rooms.put(i, new Room(i, "Luxury", 300.0, true));
+        }
     }
 
 
@@ -72,6 +84,15 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
     public String getRoom(Long roomID) throws RemoteException {
         Room room = rooms.get(roomID);
         return room != null ? room.toString() : "Quarto não encontrado.";
+    }
+
+    @Override
+    public String searchAvailableRoomsByType(String type) throws RemoteException {
+        return rooms.values().stream()
+                .filter(Room::getAvailable)
+                .filter(r -> r.getType().equalsIgnoreCase(type))
+                .toList()
+                .toString();
     }
 
     @Override

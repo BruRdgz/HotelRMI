@@ -27,6 +27,7 @@ public class HotelClient {
         commands.put("reservar", this::bookRoom);
         commands.put("cancelar", this::cancelBooking);
         commands.put("disponiveis", this::getAvailableRooms);
+        commands.put("disponiveis_tipo", this::searchRoomsByType);
         commands.put("reservas", () -> println(hotelService.getBookings()));
         commands.put("reserva", this::getBooking);
         commands.put("quarto", this::getRoom);
@@ -66,9 +67,15 @@ public class HotelClient {
         println("reservas       - Ver todas as reservas");
         println("reserva        - Ver uma reserva específica");
         println("quarto         - Ver um quarto específico");
+        commands.put("disponiveis_tipo", this::searchRoomsByType);
         println("quartos        - Ver todos os quartos");
         println("atualizar      - Atualizar um quarto");
         println("sair           - Sair do sistema");
+    }
+
+    private void searchRoomsByType() throws Exception {
+        String type = readString("Digite o tipo do quarto");
+        println(hotelService.searchAvailableRoomsByType(type));
     }
 
     private void bookRoom() throws Exception {
