@@ -16,22 +16,21 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
     public HotelServiceImpl() throws RemoteException {
         super();
         for (long i = 1; i <= 10; i++) {
-            rooms.put(i, new Room(i, "Standard", 100.0, true));
+            rooms.put(i, new Room(i, "Standard", 100.0));
         }
         for (long i = 11; i <= 20; i++) {
-            rooms.put(i, new Room(i, "Deluxe", 150.0, true));
+            rooms.put(i, new Room(i, "Deluxe", 150.0));
         }
         for (long i = 21; i <= 30; i++) {
-            rooms.put(i, new Room(i, "Suite", 200.0, true));
+            rooms.put(i, new Room(i, "Suite", 200.0));
         }
         for (long i = 31; i <= 40; i++) {
-            rooms.put(i, new Room(i, "Premium", 250.0, true));
+            rooms.put(i, new Room(i, "Premium", 250.0));
         }
         for (long i = 41; i <= 50; i++) {
-            rooms.put(i, new Room(i, "Luxury", 300.0, true));
+            rooms.put(i, new Room(i, "Luxury", 300.0));
         }
     }
-
 
     @Override
     public String sayHello() throws RemoteException {
@@ -40,22 +39,19 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
 
     @Override
     public String bookRoom(Long roomID, String guestName, LocalDate checkIn, LocalDate checkOut) throws RemoteException {
-        if (rooms.containsKey(roomID) && rooms.get(roomID).getAvailable()) {
+        if (rooms.containsKey(roomID)) {
             Booking booking = new Booking(System.currentTimeMillis(), roomID, checkIn, checkOut, guestName);
             bookings.put(booking.getId(), booking);
-            rooms.get(roomID).setAvailable(false);
-            return "Quarto reservado com sucesso!";
-        } else {
-            return "Quarto não encontrado ou não disponível.";
+            return "Quarto reservado com sucesso! Seu ID de reserva é: " + booking.getId();
         }
+        return "Quarto não encontrado.";
     }
 
     @Override
     public String cancelBooking(Long bookingID) throws RemoteException {
         Booking booking = bookings.remove(bookingID);
         if (booking != null) {
-            rooms.get(booking.getRoomID()).setAvailable(true);
-            return "Rserva cancelada com sucesso!";
+            return "Reserva cancelada com sucesso!";
         } else {
             return "Reserva não encontrada.";
         }
@@ -63,10 +59,7 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
 
     @Override
     public String getAvailableRooms(LocalDate checkIn, LocalDate checkOut) throws RemoteException {
-        return rooms.values().stream()
-                .filter(Room::getAvailable)
-                .toList()
-                .toString();
+        return rooms.values().toString();
     }
 
     @Override
@@ -81,6 +74,14 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
     }
 
     @Override
+    public String getBookingsByRoom(Long roomID) throws RemoteException {
+        return bookings.values().stream()
+                .filter(booking -> booking.getRoomID().equals(roomID))
+                .toList()
+                .toString();
+    }
+
+    @Override
     public String getRoom(Long roomID) throws RemoteException {
         Room room = rooms.get(roomID);
         return room != null ? room.toString() : "Quarto não encontrado.";
@@ -89,7 +90,6 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
     @Override
     public String searchAvailableRoomsByType(String type) throws RemoteException {
         return rooms.values().stream()
-                .filter(Room::getAvailable)
                 .filter(r -> r.getType().equalsIgnoreCase(type))
                 .toList()
                 .toString();
@@ -106,10 +106,8 @@ public class HotelServiceImpl extends UnicastRemoteObject implements HotelServic
         if (room != null) {
             room.setType(type);
             room.setPrice(price);
-            room.setAvailable(available);
             return "Quarto atualizado com sucesso!";
-        } else {
-            return "Quarto não encontrado.";
         }
+        return "Quarto não encontrado.";
     }
 }

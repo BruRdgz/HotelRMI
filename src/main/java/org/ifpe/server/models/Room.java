@@ -10,9 +10,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room implements Serializable {
-
     private Long id;
     private String type;
     private Double price;
-    private Boolean available;
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
